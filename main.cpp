@@ -34,7 +34,7 @@ void printPreorder(nodoBST *t);
 
 int main(int argc, char **argv){
     if(argc != 2){
-        cout << "Debe ejecutarse como ./prog n" << endl;
+        cout << "Debe ejecutarse como ./tarea n" << endl;
         return EXIT_FAILURE;
     }
 
