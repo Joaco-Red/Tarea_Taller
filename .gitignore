@@ -1,0 +1,6 @@
+#ignorar archivos de vscode
+.vscode/
+
+#ignorar programa compilado
+/tarea
+/main.o

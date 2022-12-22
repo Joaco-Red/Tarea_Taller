@@ -54,13 +54,13 @@ int main(int argc, char **argv){
         int elemento = 0;
         string elementos[6];
         persona personaActual;
-        int lineIndex = 0;
+        int lineIndex = 0; //linea actual
         int totalLines = 0; //cantidad total de lineas
         //6 elementos
         while (getline(file, line)){ //recorrer lineas y almacenar datos en vector personas
-            totalLines++;
             elemento = 0;
             if (lineIndex != 0){
+                totalLines++; //aumentar total de lineas
                 for(int i = 0; i < 6; i++){
                     elementos[i] = "";
                 }
@@ -79,6 +79,7 @@ int main(int argc, char **argv){
                 personaActual.nombres = elementos[1];
                 personaActual.apellido_paterno = elementos[2];
                 personaActual.apellido_materno = elementos[3];
+                //cout << "-----" << elementos[0] << "-----" << stoi(elementos[0]) << "-----" << personaActual.rut << "-----" << endl;
                 if(elementos[4] == "1"){
                     personaActual.genero = true;
                 }
@@ -89,9 +90,10 @@ int main(int argc, char **argv){
             }
             lineIndex++;
         }
-    
-    listaEn *perOrdenRut;
-    ordenEnLista(personas, perOrdenRut);
+        cout << totalLines << endl;
+
+        listaEn *perOrdenRut = new listaEn;
+        ordenEnLista(personas, perOrdenRut);
     
     //nodoBST *perOrdenArbol;
     //ordenEnArbol(personas, perOrdenArbol);
