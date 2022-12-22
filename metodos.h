@@ -35,33 +35,34 @@ void ordenEnLista(vector<persona> personas, listaEn *perOrdenRut){   //ordenar v
     //listaEn *perOrdenRut lista enlazada de personas ordenadas segun rut.
     nodo *p; //puntero actual dentro de la lista enlazada
     p = perOrdenRut;
-    for(int i = 0; i < personas.size(); i++) {
-        p = new nodo;
+    p->pos = 0;
+    unsigned int i,j; //iteradores
+    for(i = 1; i < personas.size(); i++) {
+        p->next = new nodo;
+        p = p->next;
         p->pos = i;
-        p = p->next;
     }
-
+    cout << "ListaEn creada." << endl;
     p = perOrdenRut;
-    for(int i = 0; i < personas.size(); i++){
-        cout << p->pos << " " << endl;
-        p = p->next;
-        
-    }
 
-    cout << "aaaaaaaaaaa" << endl;
+    //imprimir pos (SOLO TEST)
+    // for(int i = 0; i < personas.size(); i++){
+    //     cout << p->pos << " " << endl;
+    //     p = p->next;
+        
+    // }
+
     int aux; //numero aux para cambiar pos
-    for(int i = 0; i < personas.size()-1; i++) {
-        cout << "1aaa" << endl;
-        for(int j = 0; j < personas.size()-i-1; j++) {
-            cout << "2bbb" << endl;
-            cout << personas[p->pos].rut << " y " << personas[p->next->pos].rut << endl; 
-            if(personas[p->pos].rut>personas[p->next->pos].rut){
-                cout << "3ccc" << endl;
-                aux = p->pos;
-                p->pos = p->next->pos;
-                p->next->pos = aux;
+    for(i = 0; i < personas.size()-1; i++) {
+        for(j = 0; j < personas.size()-i-1; j++) {
+            if(p != nullptr && p->next != nullptr){
+                if(personas[p->pos].rut>personas[p->next->pos].rut){
+                    aux = p->pos;
+                    p->pos = p->next->pos;
+                    p->next->pos = aux;
+                }
+                p = p->next;
             }
-        p = p->next;
         }
     }
 }
@@ -92,7 +93,8 @@ void printPreorder(nodoBST *t){
 
 
 void ordenEnArbol(vector<persona> personas, nodoBST *L){
-    for(int i=0; i<personas.size(); i++){
+    unsigned int i; //iterador
+    for(i=0; i<personas.size(); i++){
         insert(L, personas[i].rut, i);
     }
     printPreorder(L);
