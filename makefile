@@ -1,17 +1,18 @@
 OBJS	= main.o
 SOURCE	= main.cpp
-HEADER	= metodos.h utilidades.h
-OUT	= tarea
-CC	 = g++
+HEADER	= utilidades.h metodos.h
+OUT		= tarea
+CC	 	= g++
 FLAGS	 = -g -c -Wall
 LFLAGS	 = 
 
-all: $(OBJS)
+all: clean main.o
 	$(CC) -g $(OBJS) -o $(OUT) $(LFLAGS)
 
 main.o: main.cpp
-	$(CC) $(FLAGS) main.cpp -std=c++11
+	$(CC) $(FLAGS) main.cpp -std=c++14
 
 
 clean:
-	rm -f $(OBJS) $(OUT)
+	@echo " [CLN] Removing binary files"
+	@rm -f $(OBJS) $(OUT)
