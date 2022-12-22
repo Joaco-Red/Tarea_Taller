@@ -27,10 +27,10 @@ struct info { // estructura que almacena informacion relevante sobre un apellido
 typedef struct nodo listaEn;
 
 
-void ordenEnLista(vector<persona> personas, listaEn *perOrdenRut);
-void ordenEnArbol(vector<persona> personas, nodoBST *L);
-void insert(nodoBST *(&root), int key, int pos);
-void printPreorder(nodoBST *t);
+//void ordenEnLista(vector<persona> personas, listaEn *perOrdenRut);
+//void ordenEnArbol(vector<persona> personas, nodoBST *L);
+//void insert(nodoBST *(&root), int key, int pos);
+//void printPreorder(nodoBST *t);
 
 int main(int argc, char **argv){
     if(argc != 2){
@@ -56,15 +56,16 @@ int main(int argc, char **argv){
         persona personaActual;
         int lineIndex = 0; //linea actual
         int totalLines = 0; //cantidad total de lineas
+        unsigned int i; //iterador
         //6 elementos
         while (getline(file, line)){ //recorrer lineas y almacenar datos en vector personas
             elemento = 0;
             if (lineIndex != 0){
                 totalLines++; //aumentar total de lineas
-                for(int i = 0; i < 6; i++){
+                for(i = 0; i < 6; i++){
                     elementos[i] = "";
                 }
-                for (int i = 0; i < line.size(); i++){
+                for (i = 0; i < line.size(); i++){
                     if(line[i] != ','){
                         elementos[elemento] += line[i];
                     }
@@ -90,9 +91,8 @@ int main(int argc, char **argv){
             }
             lineIndex++;
         }
-        cout << totalLines << endl;
 
-        listaEn *perOrdenRut = new listaEn;
+        listaEn *perOrdenRut = new listaEn; //cout << "CHECK!" << endl;
         ordenEnLista(personas, perOrdenRut);
     
     //nodoBST *perOrdenArbol;
