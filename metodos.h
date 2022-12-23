@@ -28,6 +28,16 @@ struct BinaryNode {
 };
 typedef struct BinaryNode nodoBST;
 
+struct NodeAVL {
+  int key;
+  int altura;
+  NodeAVL *izq;
+  NodeAVL *der;
+};
+
+typedef struct NodeAVL AVL;
+
+
 //typedef map<int, int> nodos;
 
 
