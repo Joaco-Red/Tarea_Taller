@@ -46,7 +46,7 @@ struct infoStruct {
   float pcent_mujeres;
 };
 
-typedef struct info;
+typedef struct infoStruct info;
 
 
 //typedef map<int, int> nodos;
@@ -161,6 +161,12 @@ void insertarPersonaAVL(AVL* &arbol, persona p, int pos) {
     equilibrar(arbol);
 }
 
+void agregaAVL(vector<persona> personas, AVL *arbol){
+    for(int i=0; i<personas.size(); i++){
+        insertarPersonaAVL(arbol, personas[i], i);
+    }
+}
+
 vector<info> buscarApellidosAVL(AVL* arbol, vector<persona> personas, vector<string> apellidos) {
     // Crea un vector de estructuras info con un tamaño igual al número de apellidos en el vector de apellidos
     vector<info> resultado(apellidos.size());
@@ -169,7 +175,7 @@ vector<info> buscarApellidosAVL(AVL* arbol, vector<persona> personas, vector<str
     if (arbol == NULL) return resultado;
 
     // Obtiene la posición del elemento de tipo persona en el vector de personas
-    int posicion = arbol->key;
+    int posicion = arbol->value;
 
     // Obtiene el elemento de tipo persona a partir de su posición en el vector de personas
     persona p = personas[posicion];
@@ -222,7 +228,6 @@ void ordenEnLista(vector<persona> personas, listaEn *perOrdenRut){   //ordenar v
         p = p->next;
         p->pos = i;
     }
-    cout << "ListaEn creada." << endl;
     p = perOrdenRut;
 
     //imprimir pos (SOLO TEST)
@@ -280,7 +285,7 @@ void ordenEnArbol(vector<persona> personas, nodoBST *L){
     printPreorder(L);
 }
 
-void abreArchivo(string filename, vector<persona> personas){
+vector<persona> abreArchivo(string filename, vector<persona> personas){
 
     // Cargar el archivo "filename" y guardar los datos en personas;
     fstream file(filename, ios::in);
@@ -323,7 +328,7 @@ void abreArchivo(string filename, vector<persona> personas){
                 }
                 else personaActual.genero = false;
                 personaActual.edad = stoi(elementos[5]);
-
+                
                 personas.push_back(personaActual);
             }
             lineIndex++;
@@ -331,9 +336,5 @@ void abreArchivo(string filename, vector<persona> personas){
 
         
     }
+    return personas;
 }
-
-
-
-
-
