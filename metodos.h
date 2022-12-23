@@ -38,6 +38,16 @@ struct NodeAVL {
 
 typedef struct NodeAVL AVL;
 
+struct infoStruct {
+  string apellido;
+  int repeticiones;
+  int edad_promedio;
+  float pcent_hombres;
+  float pcent_mujeres;
+};
+
+typedef struct info;
+
 
 //typedef map<int, int> nodos;
 
@@ -151,36 +161,54 @@ void insertarPersonaAVL(AVL* &arbol, persona p, int pos) {
     equilibrar(arbol);
 }
 
-vector<int> buscarApellidos(AVL* arbol, vector<string> apellidos, vector<persona> personas) {
-    // Crea un vector de enteros con un tamaño igual al número de apellidos en el vector de apellidos
-    vector<int> info(apellidos.size());
+vector<info> buscarApellidosAVL(AVL* arbol, vector<persona> personas, vector<string> apellidos) {
+    // Crea un vector de estructuras info con un tamaño igual al número de apellidos en el vector de apellidos
+    vector<info> resultado(apellidos.size());
 
     // Si el nodo es nulo, termina la función
-    if (arbol == NULL) return info;
+    if (arbol == NULL) return resultado;
 
-    // Obtiene el elemento de tipo persona almacenado en el nodo
-    persona p = personas[arbol->value];
+    // Obtiene la posición del elemento de tipo persona en el vector de personas
+    int posicion = arbol->key;
+
+    // Obtiene el elemento de tipo persona a partir de su posición en el vector de personas
+    persona p = personas[posicion];
 
     // Recorre el vector de apellidos
     for (int i = 0; i < apellidos.size(); i++) {
         // Si el apellido paterno o materno del elemento de tipo persona es igual a alguno de los apellidos del vector de apellidos
         if (p.apellido_paterno == apellidos[i] || p.apellido_materno == apellidos[i]) {
-        // Incrementa el contador correspondiente en el vector de enteros info
-        info[i]++;
+            // Incrementa el contador de repeticiones de la estructura info correspondiente
+            resultado[i].repeticiones++;
+            resultado[i].edad_promedio += p.edad;
+            if(p.genero == 1){
+                resultado[i].pcent_hombres++;
+            }
+            else{
+                resultado[i].pcent_mujeres++;
+            }
         }
     }
 
     // Llama a la función de búsqueda recursivamente para el subárbol izquierdo y derecho del nodo actual
-    vector<int> infoIzq = buscarApellidos(arbol->izq, apellidos);
-    vector<int> infoDer = buscarApellidos(arbol->der, apellidos);
+    vector<info> resultadoIzq = buscarApellidosAVL(arbol->izq, personas, apellidos);
+    vector<info> resultadoDer = buscarApellidosAVL(arbol->der, personas, apellidos);
 
-    // Suma los valores de los vectores de enteros infoIzq y infoDer al vector de enteros info
+    // Suma los valores de los vectores de estructuras info resultadoIzq y resultadoDer al vector de estructuras info resultado
     for (int i = 0; i < apellidos.size(); i++) {
-        info[i] += infoIzq[i] + infoDer[i];
+        resultado[i].repeticiones += resultadoIzq[i].repeticiones + resultadoDer[i].repeticiones;
     }
 
-    // Devuelve el vector de enteros info
-    return info;
+    // Calcula el porcentaje de hombres y mujeres para cada estructura info
+    for (int i = 0; i < apellidos.size(); i++) {
+        if (resultado[i].repeticiones > 0) {
+            resultado[i].pcent_hombres = ((float) resultado[i].pcent_hombres / resultado[i].repeticiones)*100;
+            resultado[i].pcent_mujeres = ((float) resultado[i].pcent_mujeres / resultado[i].repeticiones)*100;
+            resultado[i].edad_promedio = (float) resultado[i].edad_promedio / resultado[i].repeticiones;
+        }
+    }
+    // Devuelve el vector de estructuras info resultado
+    return resultado;
 }
 
 void ordenEnLista(vector<persona> personas, listaEn *perOrdenRut){   //ordenar vector usando listaEn((lazada))
@@ -250,6 +278,59 @@ void ordenEnArbol(vector<persona> personas, nodoBST *L){
         insert(L, personas[i].rut, i);
     }
     printPreorder(L);
+}
+
+void abreArchivo(string filename, vector<persona> personas){
+
+    // Cargar el archivo "filename" y guardar los datos en personas;
+    fstream file(filename, ios::in);
+
+    string line;
+
+    if(file.is_open()){ // si el archivo esta abierto
+        int elemento = 0;
+        string elementos[6];
+        persona personaActual;
+        int lineIndex = 0; //linea actual
+        int totalLines = 0; //cantidad total de lineas
+        unsigned int i; //iterador
+        //6 elementos
+        while (getline(file, line)){ //recorrer lineas y almacenar datos en vector personas
+            elemento = 0;
+            if (lineIndex != 0){
+                totalLines++; //aumentar total de lineas
+                for(i = 0; i < 6; i++){
+                    elementos[i] = "";
+                }
+                for (i = 0; i < line.size(); i++){
+                    if(line[i] != ','){
+                        elementos[elemento] += line[i];
+                    }
+                    else{
+                        cout << elementos[elemento] << endl;
+                        elemento++;
+                    }
+                }
+
+                //guardar elementos en vector personas
+                personaActual.rut = stoi(elementos[0]);
+                personaActual.nombres = elementos[1];
+                personaActual.apellido_paterno = elementos[2];
+                personaActual.apellido_materno = elementos[3];
+                //cout << "-----" << elementos[0] << "-----" << stoi(elementos[0]) << "-----" << personaActual.rut << "-----" << endl;
+                if(elementos[4] == "1"){
+                    personaActual.genero = true;
+                }
+                else personaActual.genero = false;
+                personaActual.edad = stoi(elementos[5]);
+
+                personas.push_back(personaActual);
+            }
+            lineIndex++;
+        }
+
+        
+    }
 }
 
 
