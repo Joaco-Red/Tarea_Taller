@@ -94,6 +94,8 @@ int main(int argc, char **argv){
 
         listaEn *perOrdenRut = new listaEn; //cout << "CHECK!" << endl;
         ordenEnLista(personas, perOrdenRut);
+
+
     
     //nodoBST *perOrdenArbol;
     //ordenEnArbol(personas, perOrdenArbol);
